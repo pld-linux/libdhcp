@@ -6,11 +6,12 @@ License:	GPL
 Group:		Development/Libraries
 Source0:	http://people.redhat.com/dcantrel/libdhcp/%{name}-%{version}.tar.bz2
 # Source0-md5:	02376447afa1130ff2427dfead1a2daf
+Patch0:		%{name}-opt.patch
 URL:		http://people.redhat.com/dcantrel/
 BuildRequires:	dhcp-devel
 BuildRequires:	libdhcp4client-devel >= 12:3.0.4-18
 BuildRequires:	libdhcp6client-devel >= 0.10-38
-BuildRequires:	libnl-devel >= 1.0-0.pre6.1
+BuildRequires:	libnl-devel >= 1.0-0.pre5.1
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -43,12 +44,13 @@ Static libdhcp.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} \
-	CFLAGS="%{rpmcflags}" \
+	OPTFLAGS="%{rpmcflags}" \
 	CC="%{__cc}"
 
 %install
@@ -56,6 +58,7 @@ rm -rf $RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	libdir=$RPM_BUILD_ROOT%{_libdir} \
 	pkgcfgdir=${RPM_BUILD_ROOT}%{_libdir}/pkgconfig
 
 %clean
