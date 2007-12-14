@@ -1,0 +1,58 @@
+--- libdhcp-1.99.1/configure.ac~	2007-11-30 22:32:20.000000000 +0100
++++ libdhcp-1.99.1/configure.ac	2007-12-14 00:30:31.990703421 +0100
+@@ -20,7 +20,7 @@
+ 
+ m4_define(libdhcp4client_required_version, 3.1.0)
+ m4_define(libdhcp6client_required_version, 0.10)
+-m4_define(libnl_required_version, 1.0-0.10.pre5.4)
++m4_define(libnl_required_version, 1.0-pre5)
+ 
+ AC_PREREQ(2.61)
+ AC_INIT([libdhcp], [1.99.1], [dcantrell@redhat.com])
+--- libdhcp-1.99.1/src/nic.c~	2007-10-25 23:31:09.000000000 +0200
++++ libdhcp-1.99.1/src/nic.c	2007-12-14 00:57:09.880884067 +0100
+@@ -43,6 +43,7 @@
+ 
+ /* libnl Netlink API headers: */
+ 
++#include <linux/types.h>
+ #include <netlink/netlink.h>
+ #include <netlink/netlink-kernel.h>
+ #include <netlink/rtnetlink-kernel.h>
+@@ -338,7 +338,7 @@
+     rlen = 1;
+     while (rlen > 0) {
+         rhdrs = NULL;
+-        if ((rlen = nl_recv(nh->nl, &addr, (void *)&rhdrs)) <= 0)
++        if ((rlen = nl_recv(nh->nl, &addr, (void *)&rhdrs, NULL)) <= 0)
+             break;
+ 
+         if (rlen < sizeof (*rhdr) + sizeof (struct ifinfomsg)) {
+@@ -1034,7 +1034,7 @@
+     int remaining = 0;
+ 
+     do {
+-        if ((rlen = nl_recv(nh->nl, &kernel, (void*) &buf)) > 0) {
++        if ((rlen = nl_recv(nh->nl, &kernel, (void*) &buf, NULL)) > 0) {
+             if (rlen < (sizeof(struct nlmsghdr) + sizeof(struct ifaddrmsg)))
+                 goto nla_return;
+ 
+@@ -1885,7 +1885,7 @@
+     int remaining = 0;
+ 
+     do {
+-        if ((rlen = nl_recv(nh->nl, &kernel, (void*) &buf)) > 0) {
++        if ((rlen = nl_recv(nh->nl, &kernel, (void*) &buf, NULL)) > 0) {
+             if (rlen < (sizeof(struct nlmsghdr) + sizeof(struct rtmsg)))
+                 goto rta_return;
+ 
+--- libdhcp-1.99.1/src/pump.c~	2007-10-25 23:34:29.000000000 +0200
++++ libdhcp-1.99.1/src/pump.c	2007-12-14 01:51:21.265150233 +0100
+@@ -79,6 +79,7 @@
+ #include <errno.h>
+ #include <string.h>
+ #include <assert.h>
++#include <linux/types.h>
+ #include <netlink/netlink.h>
+ #include <netlink/netlink-kernel.h>
+ 
