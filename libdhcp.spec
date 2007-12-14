@@ -1,16 +1,16 @@
 Summary:	A library for network interface configuration with DHCP
 Summary(pl.UTF-8):	Biblioteka do konfiguracji interfejsów sieciowych przy użyciu DHCP
 Name:		libdhcp
-Version:	1.20
+Version:	1.99.1
 Release:	1
 License:	GPL
 Group:		Libraries
-Source0:	http://people.redhat.com/dcantrel/libdhcp/%{name}-%{version}.tar.bz2
-# Source0-md5:	02376447afa1130ff2427dfead1a2daf
-Patch0:		%{name}-opt.patch
+Source0:	%{name}-%{version}.tar.bz2
+# Source0-md5:	0197bdbdd17cef23ced4edafa42fe59c
+Patch0:		%{name}-libnl.patch
 URL:		http://people.redhat.com/dcantrel/
 BuildRequires:	dhcp-devel
-BuildRequires:	libdhcp4client-devel >= 12:3.0.4-18
+BuildRequires:	libdhcp4client-devel >= 4:3.0.4-18
 BuildRequires:	libdhcp6client-devel >= 0.10-38
 BuildRequires:	libnl-devel >= 1.0-0.pre5.1
 BuildRequires:	pkgconfig
@@ -37,7 +37,7 @@ Summary:	C header files for development with libdhcp
 Summary(pl.UTF-8):	Pliki nagłówkowe C do programowania z użyciem libdhcp
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	libdhcp4client-devel >= 12:3.0.4-18
+Requires:	libdhcp4client-devel >= 4:3.0.4-18
 Requires:	libdhcp6client-devel >= 0.10-38
 Requires:	libnl-devel >= 1.0-0.pre5.1
 
@@ -66,16 +66,17 @@ Statyczna biblioteka libdhcp.
 %build
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} \
-	OPTFLAGS="%{rpmcflags}" \
-	CC="%{__cc}"
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__automake}
+%configure
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	libdir=$RPM_BUILD_ROOT%{_libdir} \
-	pkgcfgdir=${RPM_BUILD_ROOT}%{_libdir}/pkgconfig
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -86,12 +87,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README COPYING ChangeLog TODO
-%attr(755,root,root) %{_libdir}/libdhcp.so.*
+%attr(755,root,root) %{_libdir}/libdhcp-*.so.*
 
 %files devel
 %defattr(644,root,root,755)
-%doc examples
 %attr(755,root,root) %{_libdir}/libdhcp.so
+%{_libdir}/libdhcp.la
 %{_includedir}/libdhcp
 %{_pkgconfigdir}/libdhcp.pc
 
