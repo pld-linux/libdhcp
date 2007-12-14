@@ -3,16 +3,19 @@ Summary(pl.UTF-8):	Biblioteka do konfiguracji interfejsów sieciowych przy użyc
 Name:		libdhcp
 Version:	1.99.1
 Release:	1
-License:	GPL
+License:	GPL v2+
 Group:		Libraries
 Source0:	%{name}-%{version}.tar.bz2
 # Source0-md5:	0197bdbdd17cef23ced4edafa42fe59c
 Patch0:		%{name}-libnl.patch
 URL:		http://people.redhat.com/dcantrel/
+BuildRequires:	autoconf >= 2.61
+BuildRequires:	automake
 BuildRequires:	dhcp-devel
-BuildRequires:	libdhcp4client-devel >= 4:3.0.4-18
+BuildRequires:	libdhcp4client-devel >= 4:3.1.0
 BuildRequires:	libdhcp6client-devel >= 0.10-38
 BuildRequires:	libnl-devel >= 1.0-0.pre5.1
+BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -64,8 +67,6 @@ Statyczna biblioteka libdhcp.
 %patch0 -p1
 
 %build
-rm -rf $RPM_BUILD_ROOT
-
 %{__libtoolize}
 %{__aclocal} -I m4
 %{__autoconf}
@@ -75,6 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -87,7 +89,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README COPYING ChangeLog TODO
-%attr(755,root,root) %{_libdir}/libdhcp-*.so.*
+%attr(755,root,root) %{_libdir}/libdhcp-*.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libdhcp-*.so.?
 
 %files devel
 %defattr(644,root,root,755)
