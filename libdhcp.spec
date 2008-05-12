@@ -1,19 +1,19 @@
 Summary:	A library for network interface configuration with DHCP
 Summary(pl.UTF-8):	Biblioteka do konfiguracji interfejsów sieciowych przy użyciu DHCP
 Name:		libdhcp
-Version:	1.99.1
+Version:	1.99.8
 Release:	1
 License:	GPL v2+
 Group:		Libraries
-Source0:	%{name}-%{version}.tar.bz2
-# Source0-md5:	0197bdbdd17cef23ced4edafa42fe59c
-Patch0:		%{name}-libnl.patch
-URL:		http://people.redhat.com/dcantrel/
+Source0:	http://dcantrel.fedorapeople.org/libdhcp/%{name}-%{version}.tar.bz2
+# Source0-md5:	f9ba27f85a10d9c57727b909c099ed0e
+#Patch0:		%{name}-libnl.patch
+URL:		http://dcantrel.fedorapeople.org/
 BuildRequires:	autoconf >= 2.61
 BuildRequires:	automake
 BuildRequires:	dhcp-devel
-BuildRequires:	libdhcp4client-devel >= 4:3.1.0
-BuildRequires:	libdhcp6client-devel >= 0.10-38
+BuildRequires:	libdhcp4client-devel >= 4:4.0.0-4
+BuildRequires:	libdhcp6client-devel >= 1.0.4
 BuildRequires:	libnl-devel >= 1.0-0.pre5.1
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
@@ -64,7 +64,7 @@ Statyczna biblioteka libdhcp.
 
 %prep
 %setup -q
-%patch0 -p1
+#%%patch0 -p1
 
 %build
 %{__libtoolize}
