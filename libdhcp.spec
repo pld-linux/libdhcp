@@ -2,7 +2,7 @@ Summary:	A library for network interface configuration with DHCP
 Summary(pl.UTF-8):	Biblioteka do konfiguracji interfejsów sieciowych przy użyciu DHCP
 Name:		libdhcp
 Version:	1.99.8
-Release:	3
+Release:	4
 License:	GPL v2+
 Group:		Libraries
 Source0:	http://dcantrel.fedorapeople.org/libdhcp/%{name}-%{version}.tar.bz2
